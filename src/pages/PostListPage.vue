@@ -27,14 +27,38 @@ async function getPosts() {
 
 getUsers()
 getPosts()
+
+const userList = ref()
+
+function openUserList() {
+  userList.value.showModal()
+}
+
+function closeUserList() {
+  userList.value.close()
+}
 </script>
 
 <template>
   <h1>Home Page</h1>
   <div class="post-list">
     <aside>
-      <h2>Users</h2>
-      <UserNavList :users="users" />
+      <div class="user-list user-list_mobile">
+        <button class="user-list_mobile__btn" @click="openUserList">
+          <h2 class="user-list_mobile__heading">Show users</h2>
+        </button>
+        <dialog
+          class="user-list_mobile__dialog"
+          ref="userList"
+          @click="closeUserList"
+        >
+          <UserNavList :users="users" />
+        </dialog>
+      </div>
+      <div class="user-list user-list_desktop">
+        <h2>Users</h2>
+        <UserNavList :users="users" />
+      </div>
     </aside>
     <main>
       <h2>Posts</h2>
@@ -47,10 +71,58 @@ getPosts()
 .post-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
+  gap: 1rem;
 
   @media (min-width: 768px) {
     grid-template-columns: 210px 1fr;
+    gap: 3rem;
+  }
+}
+
+.user-list {
+  &_desktop {
+    display: none;
+
+    @media (min-width: 576px) {
+      display: block;
+    }
+  }
+
+  &_mobile {
+    &__btn {
+      border: none;
+      padding: 0.3em 0.6em;
+      font-family: inherit;
+      font-weight: inherit;
+      font-size: inherit;
+      color: #ffffff;
+      background-color: var(--dark-blue);
+    }
+
+    &__dialog {
+      top: 50%;
+      left: 50%;
+      padding: 1em;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      border-color: #3f496a;
+
+      &::backdrop {
+        background-color: #3f496a33;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        background-color: #3f496a;
+      }
+    }
+
+    &__heading {
+      margin: 0;
+    }
+
+    @media (min-width: 576px) {
+      display: none;
+    }
   }
 }
 </style>

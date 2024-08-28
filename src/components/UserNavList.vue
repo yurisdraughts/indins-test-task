@@ -44,6 +44,10 @@ defineProps(['users'])
     &_main {
       border: 1px solid var(--dark-blue);
       background-color: #ebebeb;
+
+      @media (prefers-color-scheme: dark) {
+        color: var(--dark-blue);
+      }
     }
 
     &_active {
