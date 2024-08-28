@@ -95,7 +95,7 @@ function closeUserList() {
       font-family: inherit;
       font-weight: inherit;
       font-size: inherit;
-      color: #ffffff;
+      color: var(--white);
       background-color: var(--dark-blue);
     }
 
@@ -104,15 +104,15 @@ function closeUserList() {
       left: 50%;
       padding: 1em;
       transform: translate(-50%, -50%);
-      background-color: #ffffff;
-      border-color: #3f496a;
+      background-color: var(--white);
+      border-color: var(--accent-color);
 
       &::backdrop {
-        background-color: #3f496a33;
+        background-color: var(--backdrop-color);
       }
 
       @media (prefers-color-scheme: dark) {
-        background-color: #3f496a;
+        background-color: var(--accent-color);
       }
     }
 

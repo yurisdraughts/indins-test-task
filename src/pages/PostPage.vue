@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
+import NewCommentForm from '../components/NewCommentForm.vue'
 
 const props = defineProps(['postId'])
 
@@ -37,56 +38,6 @@ watch(post, (currentPost) => {
     getComments(currentPost.id)
   }
 })
-
-const commentFormOpen = ref(false)
-
-const commentDialog = ref()
-
-const commentName = ref('')
-const commentBody = ref('')
-const commentEmail = ref('')
-
-function clearOrCloseCommentForm() {
-  if (!commentName.value && !commentBody.value && !commentEmail.value) {
-    commentFormOpen.value = false
-    return
-  }
-
-  ;[commentName, commentBody, commentEmail].forEach((ref) => {
-    ref.value = ''
-  })
-}
-
-function openDialog() {
-  commentDialog.value.showModal()
-}
-
-function closeDialog() {
-  commentDialog.value.close()
-}
-
-function submitForm(e) {
-  fetch('https://jsonplaceholder.typicode.com/comments', {
-    method: 'POST',
-    body: JSON.stringify({
-      name: commentName.value,
-      body: commentBody.value,
-      email: commentEmail.value,
-      postId: +props.postId,
-      userId: 11,
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  })
-    .then((response) => response.json())
-    .then((json) => {
-      comments.value.push(json)
-      ;[commentName, commentBody, commentEmail].forEach((ref) => {
-        ref.value = ''
-      })
-    })
-}
 </script>
 
 <template>
@@ -124,79 +75,7 @@ function submitForm(e) {
   <Transition appear>
     <section class="comment__wrapper" v-if="comments">
       <h2>Comments:</h2>
-      <div class="new-comment">
-        <button
-          class="new-comment__btn"
-          v-if="!commentFormOpen"
-          @click="commentFormOpen = !commentFormOpen"
-        >
-          New comment
-        </button>
-        <form
-          class="new-comment__form"
-          @submit.prevent="openDialog"
-          v-if="commentFormOpen"
-        >
-          <input
-            type="text"
-            name="title"
-            id="new-comment-title"
-            class="new-comment__input"
-            placeholder="Title of your comment..."
-            v-model="commentName"
-          />
-          <textarea
-            name="comment"
-            id="new-comment-text"
-            class="new-comment__input"
-            placeholder="Type your comment..."
-            required
-            cols="30"
-            rows="3"
-            v-model="commentBody"
-          ></textarea>
-          <input
-            type="email"
-            name="email"
-            id="new-comment-email"
-            class="new-comment__input"
-            placeholder="Your email..."
-            required
-            v-model="commentEmail"
-          />
-          <div class="new-comment__btn-wrapper">
-            <button
-              type="reset"
-              class="new-comment__btn"
-              @click="clearOrCloseCommentForm"
-            >
-              Cancel
-            </button>
-            <button type="submit" class="new-comment__btn">Send</button>
-          </div>
-          <dialog
-            class="new-comment__dialog"
-            ref="commentDialog"
-            @click="closeDialog"
-          >
-            <p>Are you sure?</p>
-            <div class="new-comment__btn-wrapper">
-              <button
-                type="reset"
-                class="new-comment__btn"
-                @click="clearOrCloseCommentForm"
-              >
-                Cancel
-              </button>
-              <form method="dialog">
-                <button class="new-comment__btn" @click="submitForm">
-                  Send
-                </button>
-              </form>
-            </div>
-          </dialog>
-        </form>
-      </div>
+      <NewCommentForm :postId="props.postId" :comments="comments" />
       <article class="comment" v-for="comment in comments">
         <h3>{{ comment.name }}</h3>
         <p>{{ comment.body }}</p>
@@ -219,60 +98,6 @@ function submitForm(e) {
 
   &__wrapper {
     border-top: 4px dotted var(--dark-blue);
-  }
-}
-
-.new-comment {
-  margin-bottom: 1rem;
-
-  &__form,
-  &__dialog[open] {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-  }
-
-  &__btn,
-  &__input {
-    font-size: inherit;
-    font: inherit;
-  }
-
-  &__btn {
-    padding: 0.5em 1em;
-    border: none;
-    cursor: pointer;
-    color: #ffffff;
-    background-color: var(--dark-blue);
-  }
-
-  &__btn-wrapper {
-    display: flex;
-    justify-content: end;
-    gap: 1em;
-  }
-
-  &__dialog {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 1rem;
-    border-color: #3f496a;
-
-    &::backdrop {
-      background-color: #3f496a33;
-    }
-  }
-
-  &__input {
-    border: 2px solid var(--dark-blue);
-    padding: 1em;
-    color: inherit;
-    background-color: inherit;
-
-    &::placeholder {
-      color: var(--dark-blue);
-    }
   }
 }
 

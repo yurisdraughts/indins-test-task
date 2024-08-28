@@ -1,14 +1,19 @@
 :root {
+  --accent-color: #3f496a;
+  --backdrop-color: #3f496a33;
+  --dark-blue: rgb(99, 126, 168);
+  --light-gray: #49494933;
+  --white: #ffffff;
+  --transition: all 0.5s ease;
+  --short-transition: all 0.3s ease;
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: #3f496a;
-  background-color: #ffffff;
-  --dark-blue: rgb(99, 126, 168);
-  --light-gray: #49494933;
-  --transition: all 0.5s ease;
+  color: var(--accent-color);
+  background-color: var(--white);
 
   scrollbar-gutter: stable;
 }
@@ -23,7 +28,7 @@ a {
   font-weight: 500;
   color: inherit;
   text-decoration: inherit;
-  transition: all 0.3s ease;
+  transition: var(--short-transition);
 }
 a:hover {
   color: #e8a15a;
@@ -47,7 +52,7 @@ nav ul {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #ffffff;
-    background-color: #3f496a;
+    color: var(--white);
+    background-color: var(--accent-color);
   }
 }

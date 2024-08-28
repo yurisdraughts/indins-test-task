@@ -51,7 +51,7 @@ defineProps(['users'])
     }
 
     &_active {
-      color: #ffffff;
+      color: var(--white);
       background-color: var(--dark-blue);
       cursor: pointer;
       pointer-events: none;
