@@ -9,7 +9,7 @@ const routes = [
   { path: '/post/:postId', component: PostPage, props: true },
 ]
 
-export const router = createRouter({
+export default createRouter({
   history: createWebHistory(),
   routes,
 })
